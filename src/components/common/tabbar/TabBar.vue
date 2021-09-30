@@ -1,13 +1,16 @@
 <template>
-  <div id="tab-bar">
-    <slot></slot>
+  <div id="tab-bar" >
+    <slot id="sddsd"></slot>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "TabBar"
 };
+
+
 </script>
 
 // 导入CSS样式文件,因为在<style></style>里面,所以有个固定方法@import

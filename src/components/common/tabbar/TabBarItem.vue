@@ -14,8 +14,8 @@ export default {
     path: String,
     activeColor: {
       type: String,
-      default: "red"
-    }
+      default: "red",
+    },
   },
 
   // data() {
@@ -26,19 +26,19 @@ export default {
 
   computed: {
     isActive() {
-      return this.$route.path.indexOf(this.path) !== -1;
+      return this.$route.path.indexOf(this.path) !== -1
     },
-  activeStyle() {
-    return this.isActive ? { color: this.activeColor } : {};
-  },
+    activeStyle() {
+      return this.isActive ? { color: this.activeColor } : {}
+    },
   },
 
   methods: {
     itemClick() {
-      this.$router.replace(this.path);
-    }
-  }
-};
+      this.$router.replace(this.path)
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -61,7 +61,7 @@ export default {
   }
 }
 
-.tab-bar-item img{
+.tab-bar-item img {
   width: 24px;
   height: 24px;
   margin-top: 3px;
