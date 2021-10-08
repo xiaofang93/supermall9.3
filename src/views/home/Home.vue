@@ -116,7 +116,6 @@ export default {
 <style scope>
 #home{
   padding-top: 44px;
-  overflow: hidden;
 }
 
 .home-nav {
