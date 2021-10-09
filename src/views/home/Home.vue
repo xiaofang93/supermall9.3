@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="home" @scroll="handlerScroll">
     <!-- 因为每个页面的navbar的背景颜色不一定一致,所以在这定义class="home-nav"单独设置自己页面的样式 -->
     <nav-bar class="home-nav">
       <!-- 首页导航栏只需要center内容,只需要一个slot -->
@@ -18,7 +18,10 @@
       <goods-list :goods="goods[currentType].list" />
     </div>
 
-<!-- <ul>
+    <!-- 监听组件的原生事件,必须给对应事件加上 .native 修饰符才能监听 -->
+    <back-top v-show="isShow" @click.native="backClick" />
+
+    <!-- <ul>
   <li></li>
   <li></li>
   <li></li>
@@ -41,6 +44,7 @@ import FeatureView from "./childComps/FeatureView.vue"
 // 引入 选项卡组件
 import TabControl from "../../components/content/tabControl/TabControl.vue"
 import GoodsList from "../../components/content/goods/GoodsList.vue"
+import BackTop from "../../components/content/backTop/BackTop.vue"
 
 export default {
   name: "Home",
@@ -51,6 +55,7 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
+    BackTop,
   },
   data() {
     return {
@@ -62,6 +67,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
+      isShow: false,
     }
   },
   created() {
@@ -89,6 +95,47 @@ export default {
           this.currentType = "sell"
       }
     },
+    handlerScroll(el) {
+      // 动态卷曲的高度
+      let currentHeight = el.target.scrollTop
+      // 整个元素撑开的高度
+      const scrollHeight = el.target.scrollHeight
+      // 可视区的高度(不包括纵向滚动条)
+      const clientHeight = el.target.clientHeight
+
+      // 如果卷曲的高度离底部还剩0的时候,调用getHomeGoods(),完成上拉加载更多
+      if (scrollHeight - currentHeight === clientHeight) {
+        console.log("到底了")
+        this.getHomeGoods(this.currentType)
+      }
+
+      // 判断isShow的真假,从而确认 返回顶部按钮 是否隐藏
+      currentHeight > scrollHeight / 5 ? (this.isShow = true) : (this.isShow = false)
+    },
+    backClick(e) {
+      console.log("点击了返回顶部按钮", e)
+      // target 事件属性可返回事件的目标节点（触发该事件的节点）
+      // parentElement属性返回指定元素的父元素。
+      const el = e.target.parentElement.parentElement
+
+      new Promise((resolve) => {
+        // 一直循环执行 el.scrollTop - 80 直到el.scrollTop <= 200.终止计时器
+        const timer = setInterval(() => {
+          el.scrollTop -= 120
+          if (el.scrollTop <= 200) {
+            clearInterval(timer)
+            resolve()
+          }
+        }, 3)
+      }).then((res) => {
+        const timer = setInterval(() => {
+          el.scrollTop -= 4
+          if (el.scrollTop <= 0) {
+            clearInterval(timer)
+          }
+        }, 5)
+      })
+    },
 
     // 网络请求相关
     getHomeMultidata() {
@@ -114,8 +161,12 @@ export default {
 </script>
 
 <style scope>
-#home{
+#home {
+  /* 导航栏的高度为44px */
   padding-top: 44px;
+  /* 使home的视图高度减去tabbar的高度(tabbar高度为53px) */
+  height: calc(100vh - 53px);
+  overflow-y: scroll;
 }
 
 .home-nav {
@@ -134,10 +185,7 @@ export default {
 .tab-control {
   /* 粘性定位 */
   position: sticky;
-  /* 在 viewport 视口滚动到元素 top 距离小于 10px 之前，元素为相对定位。之后，元素将固定在与顶部距离 10px 的位置，直到 viewport 视口回滚到阈值以下 */
-  top: 44px;
-}
-.goods-scoll { 
-  padding-bottom: 50px;
+  /* 在 viewport 视口滚动到元素 top 距离小于 0px 之前，元素为相对定位。之后，元素将固定在与顶部距离 0px 的位置，直到 viewport 视口回滚到阈值以下 */
+  top: 0px;
 }
 </style>
