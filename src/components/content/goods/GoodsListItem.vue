@@ -1,8 +1,8 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" @click="itemClick">
     <!-- 展示数据的图片 -->
-    <a href="https://www.bilibili.com/"> <img :src="goodsItem.show.img" alt="" /> </a>
-    
+    <img :src="goodsItem.show.img" alt="" />
+
     <div class="goods-info">
       <!-- 展示商品描述 -->
       <p>{{ goodsItem.title }}</p>
@@ -11,7 +11,6 @@
       <!-- 展示商品收藏数 -->
       <span class="collect">{{ goodsItem.cfav }}</span>
     </div>
-
   </div>
 </template>
 
@@ -24,6 +23,12 @@ export default {
       default() {
         return {}
       },
+    },
+  },
+  methods: {
+    itemClick() {
+      console.log("点击了")
+      this.$router.push("/detail/" + this.goodsItem.iid)
     },
   },
 }

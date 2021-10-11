@@ -14,9 +14,7 @@
 
     <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick" />
 
-    <div class="goods-scoll">
-      <goods-list :goods="goods[currentType].list" />
-    </div>
+    <goods-list :goods="goods[currentType].list" />
 
     <!-- 监听组件的原生事件,必须给对应事件加上 .native 修饰符才能监听 -->
     <back-top v-show="isShow" @click.native="backClick" />
@@ -68,18 +66,38 @@ export default {
       },
       currentType: "pop",
       isShow: false,
+
+      // 用来保存事件元素
+      el: null,
+      // 用来保存事件元素的位置数值
+      currentHeight: undefined,
     }
   },
+  // 进入页面是触发的函数
+  activated() {
+    if (this.el) {
+      this.el.scrollTop = this.currentHeight
+    }
+  },
+  // 离开路由之前执行的函数
+  beforeRouteLeave(to, from, next) {
+    if (this.el) {
+      this.currentHeight = this.el.scrollTop
+    }
+    // !this.el || (this.currentHeight = this.el.scrollTop)
+    next()
+  },
+
   created() {
     // 这里使用this.才会指向调用 methods里面的函数
     // 1.请求多个数据
     this.getHomeMultidata()
-
     // 2.请求商品数据
     this.getHomeGoods("pop")
     this.getHomeGoods("new")
     this.getHomeGoods("sell")
   },
+
   methods: {
     // 事件监听相关
     tabClick(index) {
@@ -96,6 +114,8 @@ export default {
       }
     },
     handlerScroll(el) {
+      // 将事件属性返回触发的元素 赋给data中的 el
+      this.el = el.target
       // 动态卷曲的高度
       let currentHeight = el.target.scrollTop
       // 整个元素撑开的高度
@@ -104,22 +124,20 @@ export default {
       const clientHeight = el.target.clientHeight
 
       // 如果卷曲的高度离底部还剩0的时候,调用getHomeGoods(),完成上拉加载更多
-      if (scrollHeight - currentHeight === clientHeight) {
-        console.log("到底了")
+      if (scrollHeight - currentHeight == clientHeight) {
         this.getHomeGoods(this.currentType)
       }
 
       // 判断isShow的真假,从而确认 返回顶部按钮 是否隐藏
       currentHeight > scrollHeight / 5 ? (this.isShow = true) : (this.isShow = false)
     },
+    // 点击返回顶部事件
     backClick(e) {
-      console.log("点击了返回顶部按钮", e)
       // target 事件属性可返回事件的目标节点（触发该事件的节点）
       // parentElement属性返回指定元素的父元素。
-      const el = e.target.parentElement.parentElement
-
+      let el = e.target.parentElement.parentElement
       new Promise((resolve) => {
-        // 一直循环执行 el.scrollTop - 80 直到el.scrollTop <= 200.终止计时器
+        // 一直循环执行 el.scrollTop - 120 直到el.scrollTop <= 200.终止计时器
         const timer = setInterval(() => {
           el.scrollTop -= 120
           if (el.scrollTop <= 200) {
@@ -140,7 +158,6 @@ export default {
     // 网络请求相关
     getHomeMultidata() {
       getHomeMultidata().then((res) => {
-        console.log(res)
         this.banners = res.data.banner.list
         this.recommends = res.data.recommend.list
       })
@@ -149,7 +166,6 @@ export default {
       // 为了复用性,每次请求页面值 +1 的数据
       const page = this.goods[type].page + 1
       getHomeGoods(type, page).then((res) => {
-        console.log(res)
         // 将获取到的res.data.list添加到goods[对应对象].list下面去
         this.goods[type].list.push(...res.data.list)
         // 每次请求数据过后,当前type的page + 1

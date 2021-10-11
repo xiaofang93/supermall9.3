@@ -1,10 +1,11 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
 
-const Home = () => import("../views/home/Home");
-const Category = () => import("../views/category/Category");
-const Cart = () => import("../views/cart/Cart");
-const Profile = () => import("../views/profile/Profile");
+const Home = () => import("../views/home/Home")
+const Category = () => import("../views/category/Category")
+const Cart = () => import("../views/cart/Cart")
+const Profile = () => import("../views/profile/Profile")
+const Detail = () => import("../views/detail/Detail")
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
   {
     path: "/profile",
     component: Profile,
+  },
+  {
+    // 添加/:id 是因为路由跳转详情页,展现该页面详情需要获取被点击的元素的id
+    path: "/detail/:id",
+    component: Detail,
   },
 ]
 
