@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="detail-nav">
     <nav-bar>
       <div slot="left" class="back" @click="backClick">
         <img src="~assets/images/common/back.svg" alt="" />
@@ -29,12 +29,13 @@ export default {
   data() {
     return {
       titles: ["商品", "参数", "评论", "推荐"],
-      currentIndex: 0,
+    currentIndex: 0,
     }
   },
   methods: {
     titleClick(index) {
       this.currentIndex = index
+      this.$emit('titleClick',index)
     },
     backClick() {
       // back() 等同于 go(-1)
@@ -45,6 +46,7 @@ export default {
 </script>
 
 <style scoped>
+
 .title {
   display: flex;
   font-size: 13px;

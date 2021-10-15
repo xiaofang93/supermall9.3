@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <keep-alive>
+      <keep-alive exclude="Detail">
         <router-view />
       </keep-alive>
-      <MainTabBar />
+      <MainTabBar v-if="!$route.meta.isShow"/>
     </div>
   </div>
 </template>

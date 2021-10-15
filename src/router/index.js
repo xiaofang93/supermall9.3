@@ -34,6 +34,7 @@ const routes = [
     // 添加/:id 是因为路由跳转详情页,展现该页面详情需要获取被点击的元素的id
     path: "/detail/:id",
     component: Detail,
+    meta: {isShow: true},
   },
 ]
 

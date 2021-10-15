@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item" @click="itemClick">
     <!-- 展示数据的图片 -->
-    <img :src="goodsItem.show.img" alt="" />
+    <img :src="showImage" alt="" />
 
     <div class="goods-info">
       <!-- 展示商品描述 -->
@@ -23,6 +23,14 @@ export default {
       default() {
         return {}
       },
+    },
+  },
+  computed: {
+    showImage() {
+      // 2个对象调换会报错
+      // 因为优先获取是首页的goodsItem.image.此时goodsItem.show是一个空对象
+      // 你无法在一个空对象里面取到img 所以goodsItem.show.img放在前面就会报错
+      return this.goodsItem.image || this.goodsItem.show.img
     },
   },
   methods: {
