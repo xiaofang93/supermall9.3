@@ -92,7 +92,7 @@ export default {
   },
   mounted() {
     const arr = [this.$refs.shopTop, this.$refs.params, this.$refs.comment, this.$refs.goods]
-    this.btnRefsEl.push(arr)
+    this.btnRefsEl = arr
   },
   methods: {
     detailScroll(e) {
