@@ -15,6 +15,8 @@
 
       <back-top @click.native="back" v-show="isShow" />
     </div>
+    <!-- 因为底部不需要跟着滚动,所以放在滚动区域的外面 -->
+    <detail-botton-bar @addCart="addCart" />
   </div>
 </template>
 
@@ -29,6 +31,7 @@ import DetailParams from "./childComps/DetailParams.vue"
 import DetailCommentInfo from "./childComps/DetailCommentInfo.vue"
 import BackTop from "../../components/content/backTop/BackTop.vue"
 import GoodsList from "../../components/content/goods/GoodsList.vue"
+import DetailBottonBar from "./childComps/DetailBottonBar.vue"
 
 export default {
   components: {
@@ -41,6 +44,7 @@ export default {
     DetailParams,
     DetailCommentInfo,
     GoodsList,
+    DetailBottonBar,
   },
   name: "Detail",
   data() {
@@ -51,10 +55,10 @@ export default {
       shop: {},
       el: {},
       detailInfo: {},
-      isShow: false,
       params: {},
       commentInfo: {},
       recommend: [],
+      isShow: false,
       btnRefsEl: [],
     }
   },
@@ -127,6 +131,16 @@ export default {
     back() {
       this.$refs.detail.scrollTop = 0
     },
+    addCart() {
+      console.log("加入购物车")
+      // 1.获取购物车需要展示的信息
+      const product = {}
+      product.image = this.topimg[0]
+      product.desc = this.goods.desc
+      product.price = this.goods.newPrice
+      product.iid = this.iid
+      console.log(product)
+    },
   },
 }
 </script>
@@ -134,6 +148,6 @@ export default {
 <style scoped>
 #detail {
   overflow: scroll;
-  height: calc(100vh - 104px);
+  height: calc(100vh - 102px);
 }
 </style>

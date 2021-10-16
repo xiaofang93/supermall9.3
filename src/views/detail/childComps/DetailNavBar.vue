@@ -1,8 +1,8 @@
 <template>
   <div class="detail-nav">
     <nav-bar>
-      <div slot="left" class="back" @click="backClick">
-        <img src="~assets/images/common/back.svg" alt="" />
+      <div slot="left"  @click="backClick">
+        <img class="back" src="~assets/images/common/back.svg" alt="" />
       </div>
       <div slot="center" class="title">
         <div
@@ -57,7 +57,7 @@ export default {
 .active {
   color: rgb(255, 17, 17);
 }
-.back img {
-  margin-top: 10px;
+.back{
+  vertical-align: middle
 }
 </style>
