@@ -91,6 +91,8 @@ export default {
     })
   },
   mounted() {
+    // 在creatde中,因为模板dom元素还没有加载完成,此时$refs.还是undefined
+    // 而在mounted中,此时dom元素已经加载完了,所以没有问题
     const arr = [this.$refs.shopTop, this.$refs.params, this.$refs.comment, this.$refs.goods]
     this.btnRefsEl = arr
   },
@@ -103,6 +105,7 @@ export default {
 
       scrollTop > scrollHeight / 4 ? (this.isShow = true) : (this.isShow = false)
 
+      // 实现滚动直接联动跳转点击按钮
       const els = this.btnRefsEl
       const len = this.btnRefsEl.length
       for (let i = 0; i < len; i++) {
