@@ -1,10 +1,10 @@
 <template>
   <div class="shop-detail">
     <detail-nav-bar @titleClick="titleClick" ref="nav" />
-
     <div id="detail" @scroll="detailScroll" ref="detail">
       <detail-swiper :banners="topimg" ref="shopTop" />
 
+<div>{{ $store.state.cartList }}</div>
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
       <detail-info :detailInfo="detailInfo" />
@@ -140,6 +140,10 @@ export default {
       product.price = this.goods.newPrice
       product.iid = this.iid
       console.log(product)
+      // 2.将商品添加到购物车里
+      // 提交 vuex里addCart自定义事件,并将product参数传过去
+      // this.$store.commit("addCart", product)
+      this.$store.dispatch("addCart", product)
     },
   },
 }
