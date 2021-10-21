@@ -9,8 +9,8 @@
       <span>店铺</span>
     </div>
     <div @click="select">
-      <i v-if="isShow" class="icon select"></i>
-      <i v-if="!isShow" class="icon selects"></i>
+      <i v-show="isShow" class="icon select"></i>
+      <i v-show="!isShow" class="icon selects"></i>
 
       <span>收藏</span>
     </div>
@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: "DetailBottonBar",
+  name: "DetailBottomBar",
   data() {
     return {
       isShow: true,
@@ -78,10 +78,12 @@ img {
   align-items: center;
 }
 .cart {
-  padding: 21px;
+  flex: 1 0 auto;
+  padding: 21px 10px;
   background-color: rgb(221, 198, 65);
 }
 .buy {
+  flex: 1 0 auto;
   padding: 21px;
   background-color: rgb(219, 87, 191);
 }

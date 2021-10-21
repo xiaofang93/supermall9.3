@@ -1,10 +1,10 @@
 <template>
   <div class="shop-detail">
     <detail-nav-bar @titleClick="titleClick" ref="nav" />
+
     <div id="detail" @scroll="detailScroll" ref="detail">
       <detail-swiper :banners="topimg" ref="shopTop" />
 
-<div>{{ $store.state.cartList }}</div>
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
       <detail-info :detailInfo="detailInfo" />
@@ -16,7 +16,8 @@
       <back-top @click.native="back" v-show="isShow" />
     </div>
     <!-- 因为底部不需要跟着滚动,所以放在滚动区域的外面 -->
-    <detail-botton-bar @addCart="addCart" />
+    <detail-bottom-bar @addCart="addCart" />
+
   </div>
 </template>
 
@@ -31,7 +32,7 @@ import DetailParams from "./childComps/DetailParams.vue"
 import DetailCommentInfo from "./childComps/DetailCommentInfo.vue"
 import BackTop from "../../components/content/backTop/BackTop.vue"
 import GoodsList from "../../components/content/goods/GoodsList.vue"
-import DetailBottonBar from "./childComps/DetailBottonBar.vue"
+import DetailBottomBar from "./childComps/DetailBottomBar.vue"
 
 export default {
   components: {
@@ -44,7 +45,7 @@ export default {
     DetailParams,
     DetailCommentInfo,
     GoodsList,
-    DetailBottonBar,
+    DetailBottomBar,
   },
   name: "Detail",
   data() {
@@ -138,6 +139,7 @@ export default {
       product.image = this.topimg[0]
       product.desc = this.goods.desc
       product.price = this.goods.newPrice
+      product.lowPrice = this.goods.lowPrice
       product.iid = this.iid
       console.log(product)
       // 2.将商品添加到购物车里

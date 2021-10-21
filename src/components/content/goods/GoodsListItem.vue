@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item" @click="itemClick">
     <!-- 展示数据的图片 -->
-    <img :src="showImage" alt="" />
+    <img v-lazy="showImage" :key="showImage" alt="" />
 
     <div class="goods-info">
       <!-- 展示商品描述 -->
